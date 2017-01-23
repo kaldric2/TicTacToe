@@ -4,3 +4,105 @@
     font-family: 'Permanent Marker', cursive;
     font-family: 'Gloria Hallelujah', cursive;
 */
+
+body {
+    background-color: #000;
+}
+
+header {
+    margin: 20px auto 0;
+    color: #fff;
+    font-family: 'Russo One', sans-serif;
+    font-size: 3em;
+    text-align: center;
+}
+
+.mainContainer {
+    margin: 15px auto 25px;
+    padding: 1px;
+    width: 500px;
+    height: 610px;
+    background-color: #888;
+    box-shadow: -1px -1px 3px 1px #555 inset, 1px 1px 3px 1px #ddd inset, -3px -3px 3px 2px #777 inset, 3px 3px 3px 2px #777 inset;
+    border-radius: 10px;
+}
+
+.gameBoard {
+    margin: 25px;
+    width: 450px;
+    height: 450px;
+}
+
+.gameCell {
+    width: 142px;
+    height: 142px;
+    margin: 1px;
+    border: 2px inset #ddd;
+    background-color: #fff;
+    float: left;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 9em;
+    text-align: center;
+}
+
+.gameCellText {
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.playerSelectionDiv {
+    margin: 5px auto;
+    width: 150px;
+    height: 60px;
+    /*text-align: center;*/
+}
+
+.playerSelectionSpan {
+    /*display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);*/
+}
+
+.playerLabel {
+    float: left;
+    margin-left: 13px;
+    color: #111;
+    font-variant: small-caps;
+    font-family: 'Russo One', sans-serif;
+    font-size: 1.2em;
+    text-align: center;
+    position: relative;
+}
+
+.playerLabel > input {
+    display: inline-block;;
+    position: relative;
+    /*top: 50%;*/
+    transform: translateY(-25%);
+}
+
+.buttonDiv {
+    width: 150px;
+    height: 25px;
+    margin: 5px auto;
+    text-align: center;
+}
+
+.buttonSpan {
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+input[type="button"] {
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 10px;
+    font-size: 1em;
+    margin-top: 10px;
+    color: #111;
+    font-family: 'Russo One', sans-serif;
+}
