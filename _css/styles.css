@@ -136,3 +136,17 @@ input[type="button"] {
     color: #111;
     font-family: 'Russo One', sans-serif;
 }
+
+input[type="button"]:focus {
+    outline: none;
+}
+
+/*input[type="button"]:hover {
+    background-color: rgb(38, 91, 247);
+    color: #fff;
+    font-weight: lighter;
+}
+
+input[type="button"]:active {
+    /*border: 2px inset #000;*/
+}*/
