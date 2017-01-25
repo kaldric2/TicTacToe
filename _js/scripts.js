@@ -13,7 +13,7 @@
 // TODO: Build function to check for win condition
 // TODO: Make a custom alert box & function
 // TODO: Make error alert(s)
-// TODO: Make win/lose condition alert
+// Make win/lose condition alert
 // TODO: Add ability to set player names
 
 // globals
@@ -39,23 +39,25 @@ function randomSquare() {
 
 function cpuMove() {
     // TODO: Build non-random cpu AI
-    var emptySquares = false;
-    while (!emptySquare) {
-        // if using 2d squaresArray
-            // var square = randomSquare();
-            // if (squaresArray[square[0]][square[1]] == "") {
-            //     emptySquare = true;
-            // }
-        // if using 1d squaresArray
-        var square = squaresArray[randomSquare()];
-        if (square.firstChild.innerHTML === "") {
-            emptySquare = true;
-            square.firstChild.innerHTML = playersObj.p2.marker;
-        }
+    var emptySquares = squaresArray.filter(function(square){
+        return square.firstChild.innerHTML === "";
+    });
+
+    if (emptySquares.length) {
+        var idx = Math.floor(Math.random() * (emptySquares.length - 1));
+        emptySquares[idx].firstChild.innerHTML = playersObj.p2.marker;
+        checkWin(false);
+    } else {
+        checkWin(true);
     }
 
-    // After move, check for win condition
-    checkWin();
+}
+
+function matchOver(pNum) {
+    var winner = "p" + pNum;
+    // TODO: make custom alert
+    alert(playersObj[winner].name + " has won!");
+    setTimeout(resetGame, 3000);
 }
 
 function updatePlayerText(curPlayer, lastPlayer) {
@@ -90,6 +92,10 @@ function gameOver() {
         matchScores[1]++;
     }
 
+    // Set player text to black
+    document.getElementsByName("p1Name")[0].style.color = "#111";
+    document.getElementsByName("p2Name")[0].style.color = "#111";
+
     // check to see if match has been won
     for (var i = 0; i < matchScores.length; i++) {
         if (matchScores[i] === 3) {
@@ -102,13 +108,12 @@ function gameOver() {
     startGame();
 }
 
-function checkWin() {
+function checkWin(win) {
     // TODO: check for win condition
-    var win = false;
 
     // If win, set firstTurn = losing player
     if (win) {
-
+        gameOver();
     } else {
         // If no win, flip active player and trigger next move
         curTurn === 1
@@ -180,7 +185,7 @@ function startGame() {
     }
 
     // Fill squaresArray with gameCellTexts
-    squaresArray = document.getElementsByClassName("gameCell");
+    squaresArray = Array.from(document.getElementsByClassName("gameCell"));
 
     if (onePlayer && curTurn === 2) {
         updatePlayerText("p2Name");
@@ -217,6 +222,9 @@ function resetGame() {
         e.innerHTML = "";
         e.removeEventListener("click", clickSquare);
     }
+
+    // Reset firstTurn
+    firstTurn = 0;
 }
 
 function initGame(btn) {
