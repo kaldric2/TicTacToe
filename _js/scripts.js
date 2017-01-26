@@ -9,8 +9,8 @@
 // Loser goes first
 // Keep track of whose turn it is
 // Keep track of the letter to place in the square
-// TODO: Build game logic for cpu AI
-// TODO: Build function to check for win condition
+// Build game logic for cpu AI
+// Build function to check for win condition
 // TODO: Make a custom alert box & function
 // TODO: Make error alert(s)
 // Make win/lose condition alert
@@ -38,7 +38,7 @@ function randomSquare() {
 }
 
 function cpuMove() {
-    // TODO: Build non-random cpu AI
+    // TODO: Build smarter cpu AI
     var emptySquares = squaresArray.filter(function(square){
         return square.firstChild.innerHTML === "";
     });
@@ -46,9 +46,9 @@ function cpuMove() {
     if (emptySquares.length) {
         var idx = Math.floor(Math.random() * (emptySquares.length - 1));
         emptySquares[idx].firstChild.innerHTML = playersObj.p2.marker;
-        checkWin(false);
+        setTimeout(checkWin, 50);
     } else {
-        checkWin(true);
+        setTimeout(checkWin, 50);
     }
 
 }
@@ -56,8 +56,7 @@ function cpuMove() {
 function matchOver(pNum) {
     var winner = "p" + pNum;
     // TODO: make custom alert
-    alert(playersObj[winner].name + " has won!");
-    setTimeout(resetGame, 3000);
+    alert(playersObj[winner].name + " has won the match!");
 }
 
 function updatePlayerText(curPlayer, lastPlayer) {
@@ -82,15 +81,32 @@ function nextMove() {
     }
 }
 
-function gameOver() {
+function updatePlayerScores() {
+    document.getElementsByClassName("p1Score")[0].innerHTML = matchScores[0];
+    document.getElementsByClassName("p2Score")[0].innerHTML = matchScores[1];
+}
+
+function gameOver(win) {
     // flip firstTurn, increment matchScores
     if (curTurn === 1) {
         firstTurn = 2;
-        matchScores[0]++;
+        if (win) {
+            matchScores[0]++;
+            alert(playersObj.p1.name + " has won the game!");
+        }
     } else {
         firstTurn = 1;
-        matchScores[1]++;
+        if (win) {
+            matchScores[1]++;
+            alert(playersObj.p2.name + " has won the game!");
+        }
     }
+
+    if (!win) {
+        alert("It's a draw.");
+    }
+
+    updatePlayerScores();
 
     // Set player text to black
     document.getElementsByName("p1Name")[0].style.color = "#111";
@@ -99,7 +115,7 @@ function gameOver() {
     // check to see if match has been won
     for (var i = 0; i < matchScores.length; i++) {
         if (matchScores[i] === 3) {
-            matchOver(i + 1);
+            setTimeout(matchOver(i + 1), 50);
             return;
         }
     }
@@ -108,14 +124,35 @@ function gameOver() {
     startGame();
 }
 
-function checkWin(win) {
-    // TODO: check for win condition
+function checkWin() {
+    var win = false;
+    var emptySquares = squaresArray.filter(function(square){
+        return square.firstChild.innerHTML === "";
+    });
+
+    var winCombos = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+    ];
+
+    for (let combo of winCombos) {
+        var a = squaresArray[combo[0]].firstChild.innerHTML;
+        var b = squaresArray[combo[1]].firstChild.innerHTML;
+        var c = squaresArray[combo[2]].firstChild.innerHTML;
+
+        if (a !== "" && a === b && b === c) {
+            win = true;
+        }
+    }
 
     // If win, set firstTurn = losing player
     if (win) {
-        gameOver();
+        gameOver(win);
+    } else if (emptySquares.length === 0) {
+        gameOver(win);
     } else {
-        // If no win, flip active player and trigger next move
+        // If no win or draw, flip active player and trigger next move
         curTurn === 1
             ? curTurn = 2
             : curTurn = 1;
@@ -136,7 +173,7 @@ function clickSquare(square) {
     cellText.innerHTML = playersObj[curPlayer].marker;
 
     // Check for win condition
-    checkWin();
+    setTimeout(checkWin, 50);
 }
 
 function goesFirst() {
@@ -155,6 +192,9 @@ function startGame() {
         goesFirst();
     }
 
+    var firstPlayer = "p" + firstTurn;
+    alert(playersObj[firstPlayer].name + " goes first.");
+
     // Set curTurn = firstTurn
     curTurn = firstTurn;
 
@@ -162,6 +202,8 @@ function startGame() {
     firstTurn === 1
         ? setMarkers(playersObj.p1, playersObj.p2)
         : setMarkers(playersObj.p2, playersObj.p1);
+
+
 
     // Change button text to "New Match"
     document.getElementsByName("newStartButton")[0].setAttribute("value","New Match");
@@ -173,8 +215,7 @@ function startGame() {
     document.getElementsByClassName("playerScores")[0].style.display = "block";
 
     // Update .playerScores
-    document.getElementsByClassName("p1Score")[0].innerHTML = matchScores[0];
-    document.getElementsByClassName("p2Score")[0].innerHTML = matchScores[1];
+    updatePlayerScores();
 
     // Add event listeners to .gameCell
     // Empty gameCellTexts
@@ -189,7 +230,7 @@ function startGame() {
 
     if (onePlayer && curTurn === 2) {
         updatePlayerText("p2Name");
-        cpuMove();
+        setTimeout(cpuMove, 1000);
     } else {
         curTurn === 1
             ? updatePlayerText("p1Name")
@@ -219,12 +260,19 @@ function resetGame() {
     // Remove event listeners from .gameCell
     var squares = document.getElementsByClassName("gameCell");
     for (var e of squares) {
-        e.innerHTML = "";
+        e.firstChild.innerHTML = "";
         e.removeEventListener("click", clickSquare);
     }
 
     // Reset firstTurn
     firstTurn = 0;
+
+    // Reset onePlayer
+    onePlayer = false;
+
+    // Reset Player Two name
+    playersObj.p2.name = "Player Two";
+    document.getElementsByName("p2Name")[0].setAttribute("value","Player Two");
 }
 
 function initGame(btn) {
