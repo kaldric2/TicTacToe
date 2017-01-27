@@ -171,6 +171,7 @@ input[type="button"]:active {
     font-size: 1.5em;
     font-family: 'Russo One', sans-serif;
     color: #444;
+    text-align: center;
 }
 
 .alertModal > div {

@@ -351,7 +351,7 @@ function initGame(btn) {
                     playersObj.p2.name = "Computer";
                     document.getElementsByName("p2Name")[0].setAttribute("value","Computer");
                 }
-                openAlert("It's best three out of five.", "Cool!", startGame);
+                openAlert("It's best three out of five.<br>Good luck!", "Thanks!", startGame);
                 return;
             }
         }
