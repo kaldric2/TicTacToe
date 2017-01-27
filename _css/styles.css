@@ -5,6 +5,8 @@
     font-family: 'Gloria Hallelujah', cursive;
 */
 
+/* TODO: get a thin font for the modal button */
+
 body {
     background-color: #000;
 }
@@ -179,10 +181,10 @@ input[type="button"]:active {
     height: 120px;
     padding: 1em;
     position: relative;
-    width: 50%;
+    width: 90%;
     border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 1px 1px 2px 1px #555;
+    box-shadow: 1px 1px 3px 2px #555;
 }
 
 .alertClose {
@@ -196,7 +198,6 @@ input[type="button"]:active {
     font-family: 'Russo One', sans-serif;
     color: #777;
 }
-
 
 .alertClose:hover,
 .alertClose:focus {
