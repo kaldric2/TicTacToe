@@ -18,7 +18,6 @@
 // TODO: Add ability to set player names
 
 // globals
-// const xo = ["X", "O"];
 var onePlayer = false;
 var playersObj = {
     p1: { name: "Player One" },
@@ -60,11 +59,6 @@ function closeAlert() {
 }
 
 function randomSquare() {
-    // if using 2d squaresArray
-        // var x = Math.floor(Math.random() * 3) + 1;
-        // var y = Math.floor(Math.random() * 3) + 1;
-        // return [x,y];
-    // if using 1d squaresArray
     return Math.floor(Math.random() * 8);
 }
 
@@ -194,7 +188,7 @@ function assessBoard(num) {
     }
 
     // Go for the win first
-    var cpuWin = twoArrays.filter((val) => { if (val[3] === playersObj.p2.marker) return val });
+    var cpuWin = twoArrays.filter((val) => { if (val[2] === playersObj.p2.marker) return val });
     if (cpuWin.length > 0) {
         var blankIdx = cpuWin[0][0].map((val, idx) => { if (val === "") return cpuWin[0][1][idx] });
         blankIdx = blankIdx.filter((val) => { if (val != undefined) return val })[0];
