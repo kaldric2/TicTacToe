@@ -11,9 +11,10 @@
 // Keep track of the letter to place in the square
 // Build game logic for cpu AI
 // Build function to check for win condition
-// TODO: Make a custom alert box & function
-// TODO: Make error alert(s)
 // Make win/lose condition alert
+// Make a custom alert box & function
+// Make error alert(s)
+// Make smarter cpu AI
 // TODO: Add ability to set player names
 
 // globals
@@ -28,6 +29,36 @@ var curTurn = 1; // (Player) 1 or 2
 var squaresArray = [];
 var matchScores = [0,0];
 
+var callback = "";
+
+function openAlert(message, btnText, alertCallback) {
+    var alertBoxMessage = document.getElementsByClassName("alertMessage")[0];
+    alertBoxMessage.innerHTML = message;
+
+    var alertBoxClose = document.getElementsByClassName("alertClose")[0];
+    alertBoxClose.innerHTML = btnText;
+
+    var alertBoxModal = document.getElementsByClassName("alertModal")[0];
+    alertBoxModal.style.opacity = "1";
+    alertBoxModal.style.visibility = "visible";
+
+    if (alertCallback) {
+        callback = alertCallback;
+    }
+}
+
+function closeAlert() {
+    var alertBoxModal = document.getElementsByClassName("alertModal")[0];
+    alertBoxModal.style.opacity = "0";
+    alertBoxModal.style.visibility = "hidden";
+
+    var alertCallback = callback;
+    callback = 0;
+    if (alertCallback) {
+        alertCallback();
+    }
+}
+
 function randomSquare() {
     // if using 2d squaresArray
         // var x = Math.floor(Math.random() * 3) + 1;
@@ -38,12 +69,15 @@ function randomSquare() {
 }
 
 function cpuMove() {
-    // TODO: Build smarter cpu AI
+    var blockWin = assessBoard(2);
     var emptySquares = squaresArray.filter(function(square){
         return square.firstChild.innerHTML === "";
     });
 
-    if (emptySquares.length) {
+    if (blockWin) {
+        blockWin.firstChild.innerHTML = playersObj.p2.marker;
+        setTimeout(checkWin, 50);
+    } else if (emptySquares.length) {
         var idx = Math.floor(Math.random() * (emptySquares.length - 1));
         emptySquares[idx].firstChild.innerHTML = playersObj.p2.marker;
         setTimeout(checkWin, 50);
@@ -55,8 +89,7 @@ function cpuMove() {
 
 function matchOver(pNum) {
     var winner = "p" + pNum;
-    // TODO: make custom alert
-    alert(playersObj[winner].name + " has won the match!");
+    openAlert(playersObj[winner].name + " has won the match!", "Yay!");
 }
 
 function updatePlayerText(curPlayer, lastPlayer) {
@@ -87,64 +120,101 @@ function updatePlayerScores() {
 }
 
 function gameOver(win) {
+    var alertCallback = function() {
+        updatePlayerScores();
+
+        // Set player text to black
+        document.getElementsByName("p1Name")[0].style.color = "#111";
+        document.getElementsByName("p2Name")[0].style.color = "#111";
+
+        // check to see if match has been won
+        for (var i = 0; i < matchScores.length; i++) {
+            if (matchScores[i] === 3) {
+                setTimeout(matchOver(i + 1), 50);
+                return;
+            }
+        }
+
+        // if not, start a new game
+        startGame();
+    };
+
+
     // flip firstTurn, increment matchScores
     if (curTurn === 1) {
         firstTurn = 2;
         if (win) {
             matchScores[0]++;
-            alert(playersObj.p1.name + " has won the game!");
+            openAlert(playersObj.p1.name + " has won the game!", "Nice!", alertCallback);
         }
     } else {
         firstTurn = 1;
         if (win) {
             matchScores[1]++;
-            alert(playersObj.p2.name + " has won the game!");
+            openAlert(playersObj.p2.name + " has won the game!", "Nice!", alertCallback);
         }
     }
 
     if (!win) {
-        alert("It's a draw.");
+        openAlert("It's a draw.", "Meh.", alertCallback);
     }
-
-    updatePlayerScores();
-
-    // Set player text to black
-    document.getElementsByName("p1Name")[0].style.color = "#111";
-    document.getElementsByName("p2Name")[0].style.color = "#111";
-
-    // check to see if match has been won
-    for (var i = 0; i < matchScores.length; i++) {
-        if (matchScores[i] === 3) {
-            setTimeout(matchOver(i + 1), 50);
-            return;
-        }
-    }
-
-    // if not, start a new game
-    startGame();
 }
 
-function checkWin() {
-    var win = false;
-    var emptySquares = squaresArray.filter(function(square){
-        return square.firstChild.innerHTML === "";
-    });
-
+function assessBoard(num) {
     var winCombos = [
         [0,1,2],[3,4,5],[6,7,8],
         [0,3,6],[1,4,7],[2,5,8],
         [0,4,8],[2,4,6]
     ];
 
+    var twoArrays = [];
+
     for (let combo of winCombos) {
         var a = squaresArray[combo[0]].firstChild.innerHTML;
         var b = squaresArray[combo[1]].firstChild.innerHTML;
         var c = squaresArray[combo[2]].firstChild.innerHTML;
 
-        if (a !== "" && a === b && b === c) {
-            win = true;
+        if (num === 3) {
+            if (a !== "" && a === b && b === c) {
+                return true;
+            }
+        }
+
+        if (num === 2) {
+            var valsArr = [a,b,c];
+            var xS = valsArr.reduce((acc, val) => { return acc + (val === "X" ? 1 : 0) }, 0);
+            var oS = valsArr.reduce((acc, val) => { return acc + (val === "O" ? 1 : 0) }, 0);
+            var blanks = valsArr.reduce((acc, val) => { return acc + (val === "" ? 1 : 0) }, 0);
+
+            if (blanks === 1 && (xS === 2 || oS === 2)) {
+                var xO = xS === 2? "X" : "O";
+                twoArrays.push([valsArr, combo, xO]);
+            }
         }
     }
+
+    // Go for the win first
+    var cpuWin = twoArrays.filter((val) => { if (val[3] === playersObj.p2.marker) return val });
+    if (cpuWin.length > 0) {
+        var blankIdx = cpuWin[0][0].map((val, idx) => { if (val === "") return cpuWin[0][1][idx] });
+        blankIdx = blankIdx.filter((val) => { if (val != undefined) return val })[0];
+        return squaresArray[blankIdx];
+    } else if (twoArrays.length > 0) {
+        // Else, block the opponent's victory
+        var blankIdx = twoArrays[0][0].map((val, idx) => { if (val === "") return twoArrays[0][1][idx] });
+        blankIdx = blankIdx.filter((val) => { if (val != undefined) return val })[0];
+        return squaresArray[blankIdx];
+    }
+
+
+}
+
+function checkWin() {
+    var win = assessBoard(3);
+
+    var emptySquares = squaresArray.filter(function(square){
+        return square.firstChild.innerHTML === "";
+    });
 
     // If win, set firstTurn = losing player
     if (win) {
@@ -163,8 +233,7 @@ function checkWin() {
 function clickSquare(square) {
     // Fill square with appropriate symbol
     if (square.target.className == "gameCellText") {
-        // TODO: make a custom alert box & function
-        alert("Please choose an empty square");
+        openAlert("Please choose an empty square", "Ok");
         return;
     }
 
@@ -191,9 +260,6 @@ function startGame() {
     if (!firstTurn) {
         goesFirst();
     }
-
-    var firstPlayer = "p" + firstTurn;
-    alert(playersObj[firstPlayer].name + " goes first.");
 
     // Set curTurn = firstTurn
     curTurn = firstTurn;
@@ -228,14 +294,19 @@ function startGame() {
     // Fill squaresArray with gameCellTexts
     squaresArray = Array.from(document.getElementsByClassName("gameCell"));
 
-    if (onePlayer && curTurn === 2) {
-        updatePlayerText("p2Name");
-        setTimeout(cpuMove, 1000);
-    } else {
-        curTurn === 1
-            ? updatePlayerText("p1Name")
-            : updatePlayerText("p2Name");
-    }
+    var alertCallback = function(){
+        if (onePlayer && curTurn === 2) {
+            updatePlayerText("p2Name");
+            setTimeout(cpuMove, 1000);
+        } else {
+            curTurn === 1
+                ? updatePlayerText("p1Name")
+                : updatePlayerText("p2Name");
+        }
+    };
+
+    var firstPlayer = "p" + firstTurn;
+    openAlert(playersObj[firstPlayer].name + " goes first.", "Let's go!", alertCallback);
 }
 
 function resetGame() {
@@ -286,13 +357,12 @@ function initGame(btn) {
                     playersObj.p2.name = "Computer";
                     document.getElementsByName("p2Name")[0].setAttribute("value","Computer");
                 }
-                startGame();
+                openAlert("It's best three out of five.", "Cool!", startGame);
                 return;
             }
         }
         // playerSelection not checked
-        // TODO: change to use custom alert box
-        alert("Choose number of players");
+        openAlert("Choose number of players", "Ok");
     } else if (btn.target.value === "New Match") {
         // Reset game
         resetGame();
@@ -303,5 +373,8 @@ document.onreadystatechange = function () {
   if (document.readyState === "complete") {
     var button = document.getElementsByName("newStartButton")[0];
     button.addEventListener("click", initGame);
+
+    var alertBoxClose = document.getElementsByClassName("alertClose")[0];
+    alertBoxClose.addEventListener("click", closeAlert);
   }
 };
