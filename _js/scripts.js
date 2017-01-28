@@ -1,22 +1,3 @@
-/* jshint esversion: 6 */
-/* jshint expr: true */
-
-// Handle 1-player vs 2-player
-// Toggle game state on button click
-    // Change button text
-    // Swap .playerSelection with .playerScores
-// Random number generator to see who goes first
-// Loser goes first
-// Keep track of whose turn it is
-// Keep track of the letter to place in the square
-// Build game logic for cpu AI
-// Build function to check for win condition
-// Make win/lose condition alert
-// Make a custom alert box & function
-// Make error alert(s)
-// Make smarter cpu AI
-// TODO: Add ability to set player names
-
 // globals
 var onePlayer = false;
 var playersObj = {
@@ -304,8 +285,6 @@ function startGame() {
 }
 
 function resetGame() {
-    // TODO: Prompt for "are you sure?"
-
     // Change button text to "Start Match"
     document.getElementsByName("newStartButton")[0].setAttribute("value","Start Match");
 
