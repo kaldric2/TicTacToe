@@ -69,7 +69,7 @@ function matchOver(pNum) {
 
 function updatePlayerText(curPlayer, lastPlayer) {
     if (lastPlayer) {
-        document.getElementsByName(lastPlayer)[0].style = "";
+        document.getElementsByName(lastPlayer)[0].style.color = "";
     }
 
     document.getElementsByName(curPlayer)[0].style.color = "#fff";
@@ -244,8 +244,6 @@ function startGame() {
         ? setMarkers(playersObj.p1, playersObj.p2)
         : setMarkers(playersObj.p2, playersObj.p1);
 
-
-
     // Change button text to "New Match"
     document.getElementsByName("newStartButton")[0].setAttribute("value","New Match");
 
@@ -261,9 +259,9 @@ function startGame() {
     // Add event listeners to .gameCell
     // Empty gameCellTexts
     var squares = document.getElementsByClassName("gameCell");
-    for (var e of squares) {
-        e.firstChild.innerHTML = "";
-        e.addEventListener("click", clickSquare);
+    for (var i = 0; i < squares.length; i++) {
+        squares[i].firstChild.innerHTML = "";
+        squares[i].addEventListener("click", clickSquare);
     }
 
     // Fill squaresArray with gameCellTexts
@@ -303,9 +301,9 @@ function resetGame() {
     // Clear all squares
     // Remove event listeners from .gameCell
     var squares = document.getElementsByClassName("gameCell");
-    for (var e of squares) {
-        e.firstChild.innerHTML = "";
-        e.removeEventListener("click", clickSquare);
+    for (var i = 0; i < squares.length; i++) {
+        squares[i].firstChild.innerHTML = "";
+        squares[i].removeEventListener("click", clickSquare);
     }
 
     // Reset firstTurn
@@ -317,6 +315,10 @@ function resetGame() {
     // Reset Player Two name
     playersObj.p2.name = "Player Two";
     document.getElementsByName("p2Name")[0].setAttribute("value","Player Two");
+
+    // Reset player name colors
+    document.getElementsByName("p1Name")[0].style.color = "";
+    document.getElementsByName("p2Name")[0].style.color = "";
 }
 
 function initGame(btn) {
