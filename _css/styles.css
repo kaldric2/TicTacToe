@@ -8,6 +8,7 @@ header {
     font-family: 'Russo One', sans-serif;
     font-size: 3em;
     text-align: center;
+    width: 500px;
 }
 
 .mainContainer {
@@ -22,14 +23,14 @@ header {
 }
 
 .gameBoard {
-    margin: 25px;
-    width: 450px;
-    height: 450px;
+    margin: 5%;
+    width: 90%;
+    height: 73.77%;
 }
 
 .gameCell {
-    width: 142px;
-    height: 142px;
+    width: 31.5%;
+    height: 31.5%;
     margin: 1px;
     border: 2px inset #ddd;
     background-color: #fff;
@@ -46,16 +47,20 @@ header {
     transform: translateY(-50%);
 }
 
+.gameControls {
+    height: 14.75%;
+}
+
 .playerSelection {
     display: block; /* toggle with block */
-    margin: 5px auto;
-    width: 150px;
-    height: 60px;
+    margin: 1% auto;
+    width: 30%;
+    height: 66.67%;
 }
 
 .playerLabel {
     float: left;
-    margin-left: 13px;
+    margin-left: 10%;
     color: #111;
     font-variant: small-caps;
     font-family: 'Russo One', sans-serif;
@@ -67,15 +72,15 @@ header {
 .playerLabel > input {
     display: inline-block;
     position: relative;
-    /*top: 50%;*/
+    top: 50%;
     transform: translateY(-25%);
 }
 
 .playerScores {
     display: none; /* toggle with block */
-    margin: 5px auto;
-    width: 500px;
-    height: 60px;
+    margin: 1% auto;
+    width: 100%;
+    height: 66.67%;
     text-align: center;
 }
 
@@ -83,8 +88,8 @@ header {
     color: #111;
     font-family: 'Russo One', sans-serif;
     font-size: 1.5em;
-    width: 165px;
-    margin-top: 12px;
+    width: 33%;
+    margin-top: 2.4%;
     background-color: #888;
     border: none;
 }
@@ -92,13 +97,13 @@ header {
 .p1Name > input {
     text-align: right;
     float: left;
-    margin-left: 28px;
+    margin-left: 5%;
 }
 
 .p2Name > input {
     text-align: left;
     float: right;
-    margin-right: 32px;
+    margin-right: 5%;
 }
 
 .p1Score,
@@ -109,9 +114,9 @@ header {
 }
 
 .buttonDiv {
-    width: 150px;
-    height: 25px;
-    margin: 5px auto;
+    width: 33.3%;
+    height: 33.3%;
+    margin: 1% auto;
     text-align: center;
 }
 
@@ -126,7 +131,7 @@ input[type="button"] {
     background-color: rgba(255, 255, 255, 0.75);
     border-radius: 10px;
     font-size: 1em;
-    margin-top: 10px;
+    margin-top: 2%;
     color: #111;
     font-family: 'Russo One', sans-serif;
 }
@@ -189,4 +194,58 @@ input[type="button"]:focus {
 .alertClose:hover,
 .alertClose:focus {
     color: #c69
+}
+
+@media only screen and (max-width: 320px) {
+    header {
+        width: 300px;
+    }
+
+    .mainContainer {
+        width: 300px;
+        height: 366px;
+    }
+
+    .gameCell {
+        border-width: 1px;
+        font-size: 6em;
+    }
+
+    .playerSelection {
+        width: 90%;
+    }
+
+    .playerLabel {
+        font-size: 1em;
+        margin-left: 7%;
+    }
+
+    input[type="button"] {
+        margin-bottom: 5%;
+    }
+
+    .playerScores input[type="text"] {
+        font-size: 1em;
+        margin-top: 1%;
+    }
+
+    .p1Score,
+    .p2Score {
+        font-size: 1.5em;
+    }
+
+    .alertModal {
+        width: 80%;
+        height: 15%;
+        top: 30%;
+        left: 9%;
+    }
+
+    .alertMessage {
+        font-size: 1.2em;
+    }
+
+    .alertClose {
+        font-size: 0.8em;
+
 }
