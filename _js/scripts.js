@@ -101,7 +101,6 @@ function gameOver(win) {
     var alertCallback = function() {
         updatePlayerScores();
 
-        // Set player text to black
         document.getElementsByName("p1Name")[0].style.color = "#111";
         document.getElementsByName("p2Name")[0].style.color = "#111";
 
@@ -191,7 +190,6 @@ function checkWin() {
         return square.firstChild.innerHTML === "";
     });
 
-    // If win, set firstTurn = losing player
     if (win) {
         gameOver(win);
     } else if (emptySquares.length === 0) {
@@ -208,7 +206,6 @@ function checkWin() {
 function clickSquare(square) {
     lockScreen();
 
-    // Fill square with appropriate symbol
     if (square.target.className == "gameCellText") {
         openAlert("Please choose an empty square", "Ok", unlockScreen);
         return;
@@ -218,7 +215,6 @@ function clickSquare(square) {
     var cellText = square.target.firstChild;
     cellText.innerHTML = playersObj[curPlayer].marker;
 
-    // Check for win condition
     setTimeout(checkWin, 50);
 }
 
@@ -238,31 +234,23 @@ function startGame() {
         goesFirst();
     }
 
-    // Set curTurn = firstTurn
     curTurn = firstTurn;
 
-    // Set player markers
     firstTurn === 1
         ? setMarkers(playersObj.p1, playersObj.p2)
         : setMarkers(playersObj.p2, playersObj.p1);
 
-    // Change button text to "New Match"
     document.getElementsByName("newStartButton")[0].setAttribute("value","New Match");
 
-    // Hide .playerSelection
     document.getElementsByClassName("playerSelection")[0].style.display = "none";
 
-    // Unhide .playerScores
     document.getElementsByClassName("playerScores")[0].style.display = "block";
 
-    // Update .playerScores
     updatePlayerScores();
 
-    // Add event listeners to .gameCell
-    // Empty gameCellTexts
     clearScreen();
 
-    // Fill squaresArray with gameCellTexts
+    // Fill squaresArray with gameCells
     squaresArray = Array.from(document.getElementsByClassName("gameCell"));
 
     var alertCallback = function(){
@@ -303,36 +291,25 @@ function clearScreen() {
 }
 
 function resetGame() {
-    // Change button text to "Start Match"
     document.getElementsByName("newStartButton")[0].setAttribute("value","Start Match");
 
-    // Clear match scores
     matchScores = [0,0];
 
-    // Clear squares array
     squaresArray = [];
 
-    // Hide .playerScores
     document.getElementsByClassName("playerScores")[0].style.display = "none";
 
-    // Unhide .playerSelection
     document.getElementsByClassName("playerSelection")[0].style.display = "block";
 
-    // Clear all squares
-    // Remove event listeners from .gameCell
     clearScreen();
 
-    // Reset firstTurn
     firstTurn = 0;
 
-    // Reset onePlayer
     onePlayer = false;
 
-    // Reset Player Two name
     playersObj.p2.name = "Player Two";
     document.getElementsByName("p2Name")[0].setAttribute("value","Player Two");
 
-    // Reset player name colors
     document.getElementsByName("p1Name")[0].style.color = "";
     document.getElementsByName("p2Name")[0].style.color = "";
 }
@@ -355,7 +332,6 @@ function initGame(btn) {
         // playerSelection not checked
         openAlert("Choose number of players", "Ok");
     } else if (btn.target.value === "New Match") {
-        // Reset game
         resetGame();
     }
 }
