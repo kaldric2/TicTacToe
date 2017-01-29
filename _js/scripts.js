@@ -12,8 +12,6 @@ var matchScores = [0,0];
 var callback = "";
 
 function openAlert(message, btnText, alertCallback) {
-    lockScreen();
-
     var alertBoxMessage = document.getElementsByClassName("alertMessage")[0];
     alertBoxMessage.innerHTML = message;
 
@@ -39,8 +37,6 @@ function closeAlert() {
     if (alertCallback) {
         alertCallback();
     }
-
-    unlockScreen();
 }
 
 function randomSquare() {
@@ -48,8 +44,6 @@ function randomSquare() {
 }
 
 function cpuMove() {
-    lockScreen();
-
     var blockWin = assessBoard(2);
     var emptySquares = squaresArray.filter(function(square){
         return square.firstChild.innerHTML === "";
@@ -69,7 +63,10 @@ function cpuMove() {
 
 function matchOver(pNum) {
     var winner = "p" + pNum;
-    openAlert(playersObj[winner].name + " has won the match!", "Yay!");
+    document.getElementsByClassName("alertModal")[0].firstElementChild.style.backgroundColor = "#54F0AD";
+    openAlert(playersObj[winner].name + " has won the match!", "Yay!", function() {
+        document.getElementsByClassName("alertModal")[0].firstElementChild.style.backgroundColor = "#EEAB8F";
+    });
 }
 
 function updatePlayerText(curPlayer, lastPlayer) {
@@ -91,6 +88,7 @@ function nextMove() {
         var lastPlayer = "p" + lastTurn + "Name";
         var curPlayer = "p" + curTurn + "Name";
         updatePlayerText(curPlayer, lastPlayer);
+        unlockScreen();
     }
 }
 
@@ -204,7 +202,6 @@ function checkWin() {
             ? curTurn = 2
             : curTurn = 1;
             nextMove();
-            unlockScreen();
     }
 }
 
@@ -214,6 +211,8 @@ function clickSquare(square) {
         openAlert("Please choose an empty square", "Ok");
         return;
     }
+
+    lockScreen();
 
     var curPlayer = "p" + curTurn;
     var cellText = square.target.firstChild;
@@ -261,7 +260,7 @@ function startGame() {
 
     // Add event listeners to .gameCell
     // Empty gameCellTexts
-    unlockScreen(true);
+    clearScreen();
 
     // Fill squaresArray with gameCellTexts
     squaresArray = Array.from(document.getElementsByClassName("gameCell"));
@@ -274,6 +273,7 @@ function startGame() {
             curTurn === 1
                 ? updatePlayerText("p1Name")
                 : updatePlayerText("p2Name");
+            unlockScreen();
         }
     };
 
@@ -281,23 +281,24 @@ function startGame() {
     openAlert(playersObj[firstPlayer].name + " goes first.", "Let's go!", alertCallback);
 }
 
-function lockScreen(clear) {
+function lockScreen() {
     var squares = document.getElementsByClassName("gameCell");
     for (var i = 0; i < squares.length; i++) {
         squares[i].removeEventListener("click", clickSquare);
-        if (clear) {
-            squares[i].firstChild.innerHTML = "";
-        }
     }
 }
 
-function unlockScreen(clear) {
+function unlockScreen() {
     var squares = document.getElementsByClassName("gameCell");
     for (var i = 0; i < squares.length; i++) {
         squares[i].addEventListener("click", clickSquare);
-        if (clear) {
-            squares[i].firstChild.innerHTML = "";
-        }
+    }
+}
+
+function clearScreen() {
+    var squares = document.getElementsByClassName("gameCell");
+    for (var i = 0; i < squares.length; i++) {
+        squares[i].firstChild.innerHTML = "";
     }
 }
 
@@ -319,7 +320,7 @@ function resetGame() {
 
     // Clear all squares
     // Remove event listeners from .gameCell
-    lockScreen(true);
+    clearScreen();
 
     // Reset firstTurn
     firstTurn = 0;
