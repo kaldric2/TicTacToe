@@ -206,13 +206,13 @@ function checkWin() {
 }
 
 function clickSquare(square) {
+    lockScreen();
+
     // Fill square with appropriate symbol
     if (square.target.className == "gameCellText") {
-        openAlert("Please choose an empty square", "Ok");
+        openAlert("Please choose an empty square", "Ok", unlockScreen);
         return;
     }
-
-    lockScreen();
 
     var curPlayer = "p" + curTurn;
     var cellText = square.target.firstChild;
