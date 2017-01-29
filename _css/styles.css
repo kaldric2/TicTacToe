@@ -1,3 +1,7 @@
+/*  TODO: fix centering on .playerSelection
+    TODO: fix font sizes on media queries
+*/
+
 body {
     background-color: #000;
 }
@@ -40,6 +44,18 @@ header {
     text-align: center;
 }
 
+.gameCell:first-child,
+.gameCell:nth-child(4),
+.gameCell:nth-child(7) {
+    margin-left: 0.5%;
+}
+
+.gameCell:nth-child(3),
+.gameCell:nth-child(6),
+.gameCell:last-child {
+    margin-right: 0.5%;
+}
+
 .gameCellText {
     display: block;
     position: relative;
@@ -60,7 +76,7 @@ header {
 
 .playerLabel {
     float: left;
-    margin-left: 10%;
+    margin-left: 5%;
     color: #111;
     font-variant: small-caps;
     font-family: 'Russo One', sans-serif;
@@ -97,13 +113,13 @@ header {
 .p1Name > input {
     text-align: right;
     float: left;
-    margin-left: 5%;
+    margin-left: 3%;
 }
 
 .p2Name > input {
     text-align: left;
     float: right;
-    margin-right: 5%;
+    margin-right: 3%;
 }
 
 .p1Score,
@@ -142,7 +158,7 @@ input[type="button"]:focus {
 
 .alertModal {
     position: absolute;
-    top: 114px;
+    top: 20%;
     left: 0px;
     width: 100%;
     height: 20%;
@@ -169,7 +185,7 @@ input[type="button"]:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 120px;
+    height: 100%;
     padding: 1em;
     position: relative;
     width: 90%;
@@ -196,49 +212,59 @@ input[type="button"]:focus {
     color: #c69
 }
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 768px) {
+    .alertModal {
+        width: 92%;
+        height: 20%;
+        left: 3.75%;
+    }
+}
+
+@media only screen and (max-width: 450px) {
     header {
-        width: 300px;
+        width: 400px;
+        font-size: 2.5em;
     }
 
     .mainContainer {
-        width: 300px;
-        height: 366px;
+        width: 400px;
+        height: 488px;
     }
 
     .gameCell {
+        font-size: 8em;
         border-width: 1px;
-        font-size: 6em;
     }
 
-    .playerSelection {
-        width: 90%;
+    .gameCell:first-child,
+    .gameCell:nth-child(4),
+    .gameCell:nth-child(7) {
+        margin-left: 1%;
+    }
+
+    .gameCell:nth-child(3),
+    .gameCell:nth-child(6),
+    .gameCell:last-child {
+        margin-right: 1%;
     }
 
     .playerLabel {
         font-size: 1em;
-        margin-left: 7%;
-    }
-
-    input[type="button"] {
-        margin-bottom: 5%;
+        margin-left: 0;
     }
 
     .playerScores input[type="text"] {
-        font-size: 1em;
-        margin-top: 1%;
+        font-size: 1.3em;
+        transform: translateY(-25%);
     }
 
     .p1Score,
     .p2Score {
-        font-size: 1.5em;
+        font-size: 2em;
     }
 
-    .alertModal {
-        width: 80%;
-        height: 15%;
-        top: 30%;
-        left: 9%;
+    input[type="button"] {
+        font-size: 0.9em;
     }
 
     .alertMessage {
@@ -247,5 +273,112 @@ input[type="button"]:focus {
 
     .alertClose {
         font-size: 0.8em;
+    }
+}
 
+@media only screen and (max-width: 375px) {
+    header {
+        width: 350px;
+    }
+
+    .mainContainer {
+        width: 350px;
+        height: 427px;
+    }
+
+    .gameCell {
+        font-size: 7em;
+    }
+
+    .playerSelection {
+        width: 75%;
+    }
+
+    .playerLabel {
+        font-size: 1em;
+        margin-left: 7%;
+    }
+
+    .playerScores input[type="text"] {
+        font-size: 1.2em;
+    }
+
+    .p1Score,
+    .p2Score {
+        font-size: 1.5em;
+    }
+
+    input[type="button"] {
+        font-size: 0.85em;
+    }
+
+    .alertMessage {
+        font-size: 1.1em;
+    }
+
+    .alertClose {
+        font-size: 0.8em;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    header {
+        width: 300px;
+        font-size: 2em;
+    }
+
+    .mainContainer {
+        width: 300px;
+        height: 366px;
+    }
+
+    .gameCell {
+        font-size: 6em;
+    }
+
+    .gameCell:first-child,
+    .gameCell:nth-child(4),
+    .gameCell:nth-child(7) {
+        margin-left: 0;
+    }
+
+    .gameCell:nth-child(3),
+    .gameCell:nth-child(6),
+    .gameCell:last-child {
+        margin-right: 0;
+    }
+
+    .playerSelection {
+        width: 90%;
+    }
+
+    .playerLabel {
+        font-size: 1em;
+    }
+
+    .playerScores input[type="text"] {
+        font-size: 1em;
+    }
+
+    .p1Score,
+    .p2Score {
+        font-size: 1.5em;
+    }
+
+    input[type="button"] {
+        font-size: 0.8em;
+    }
+
+    .alertModal {
+        width: 90%;
+        left: 4.5%;
+    }
+
+    .alertMessage {
+        font-size: 1em;
+    }
+
+    .alertClose {
+        font-size: 0.8em;
+    }
 }
