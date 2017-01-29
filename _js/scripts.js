@@ -12,6 +12,8 @@ var matchScores = [0,0];
 var callback = "";
 
 function openAlert(message, btnText, alertCallback) {
+    lockScreen();
+
     var alertBoxMessage = document.getElementsByClassName("alertMessage")[0];
     alertBoxMessage.innerHTML = message;
 
@@ -37,6 +39,8 @@ function closeAlert() {
     if (alertCallback) {
         alertCallback();
     }
+
+    unlockScreen();
 }
 
 function randomSquare() {
@@ -44,6 +48,8 @@ function randomSquare() {
 }
 
 function cpuMove() {
+    lockScreen();
+
     var blockWin = assessBoard(2);
     var emptySquares = squaresArray.filter(function(square){
         return square.firstChild.innerHTML === "";
@@ -59,7 +65,6 @@ function cpuMove() {
     } else {
         setTimeout(checkWin, 50);
     }
-
 }
 
 function matchOver(pNum) {
@@ -113,7 +118,6 @@ function gameOver(win) {
         // if not, start a new game
         startGame();
     };
-
 
     // flip firstTurn, increment matchScores
     if (curTurn === 1) {
@@ -180,8 +184,6 @@ function assessBoard(num) {
         blankIdx = blankIdx.filter((val) => { if (val != undefined) return val })[0];
         return squaresArray[blankIdx];
     }
-
-
 }
 
 function checkWin() {
@@ -202,6 +204,7 @@ function checkWin() {
             ? curTurn = 2
             : curTurn = 1;
             nextMove();
+            unlockScreen();
     }
 }
 
@@ -258,11 +261,7 @@ function startGame() {
 
     // Add event listeners to .gameCell
     // Empty gameCellTexts
-    var squares = document.getElementsByClassName("gameCell");
-    for (var i = 0; i < squares.length; i++) {
-        squares[i].firstChild.innerHTML = "";
-        squares[i].addEventListener("click", clickSquare);
-    }
+    unlockScreen(true);
 
     // Fill squaresArray with gameCellTexts
     squaresArray = Array.from(document.getElementsByClassName("gameCell"));
@@ -280,6 +279,26 @@ function startGame() {
 
     var firstPlayer = "p" + firstTurn;
     openAlert(playersObj[firstPlayer].name + " goes first.", "Let's go!", alertCallback);
+}
+
+function lockScreen(clear) {
+    var squares = document.getElementsByClassName("gameCell");
+    for (var i = 0; i < squares.length; i++) {
+        squares[i].removeEventListener("click", clickSquare);
+        if (clear) {
+            squares[i].firstChild.innerHTML = "";
+        }
+    }
+}
+
+function unlockScreen(clear) {
+    var squares = document.getElementsByClassName("gameCell");
+    for (var i = 0; i < squares.length; i++) {
+        squares[i].addEventListener("click", clickSquare);
+        if (clear) {
+            squares[i].firstChild.innerHTML = "";
+        }
+    }
 }
 
 function resetGame() {
@@ -300,11 +319,7 @@ function resetGame() {
 
     // Clear all squares
     // Remove event listeners from .gameCell
-    var squares = document.getElementsByClassName("gameCell");
-    for (var i = 0; i < squares.length; i++) {
-        squares[i].firstChild.innerHTML = "";
-        squares[i].removeEventListener("click", clickSquare);
-    }
+    lockScreen(true);
 
     // Reset firstTurn
     firstTurn = 0;
