@@ -195,6 +195,10 @@ input[type="button"]:focus {
 }
 
 .alertClose {
+    cursor: pointer;
+}
+
+.alertCloseButton {
     background-color: transparent;
     position: absolute;
     bottom: .2em;
@@ -207,8 +211,8 @@ input[type="button"]:focus {
     color: #777;
 }
 
-.alertClose:hover,
-.alertClose:focus {
+.alertCloseButton:hover,
+.alertCloseButton:focus {
     color: #c69
 }
 
@@ -271,7 +275,7 @@ input[type="button"]:focus {
         font-size: 1.2em;
     }
 
-    .alertClose {
+    .alertCloseButton {
         font-size: 0.8em;
     }
 }
@@ -316,7 +320,7 @@ input[type="button"]:focus {
         font-size: 1.1em;
     }
 
-    .alertClose {
+    .alertCloseButton {
         font-size: 0.8em;
     }
 }
@@ -378,7 +382,7 @@ input[type="button"]:focus {
         font-size: 1em;
     }
 
-    .alertClose {
+    .alertCloseButton {
         font-size: 0.8em;
     }
 }

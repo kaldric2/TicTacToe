@@ -15,7 +15,7 @@ function openAlert(message, btnText, alertCallback) {
     var alertBoxMessage = document.getElementsByClassName("alertMessage")[0];
     alertBoxMessage.innerHTML = message;
 
-    var alertBoxClose = document.getElementsByClassName("alertClose")[0];
+    var alertBoxClose = document.getElementsByClassName("alertCloseButton")[0];
     alertBoxClose.innerHTML = btnText;
 
     var alertBoxModal = document.getElementsByClassName("alertModal")[0];
